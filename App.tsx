@@ -1,61 +1,80 @@
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput,
+  Platform,
+  // ScrollView,
+  FlatList,
+} from "react-native";
+import Todo from "./components/todo";
+import TodoInput from "./components/todoInput";
+
+interface todosInterface {
+  id: string;
+  value: string;
+}
 
 export default function App() {
-  const [todo, setTodo] = useState("");
-  const [todos, setTodos] = useState<string[]>([]);
+  const [todos, setTodos] = useState<todosInterface[]>([]);
+  const [inputVisible, setInputVisible] = useState<boolean>(false);
 
-  const inputHandler = (text: string) => {
-    setTodo(text);
+  const addTodoHandler = (todoValue: string) => {
+    setTodos((currentTodos) => [
+      ...currentTodos,
+      { id: Math.random().toString(), value: todoValue },
+    ]);
+    setInputVisible(false);
   };
 
-  const addTodoHandler = () => {
-    setTodos((currentTodos) => [...currentTodos, todo]);
+  const deleteTodoHandler = (id: string) => {
+    setTodos((currentTodos) => {
+      return currentTodos.filter((td) => td.id !== id);
+    });
+  };
+
+  const cancelTodoInput = () => {
+    setInputVisible(false);
   };
 
   return (
     <View style={{ padding: 30 }}>
       <StatusBar style="auto" />
-      {
-        <View style={styles.inputContainer}>
-          <TextInput
-            placeholder="Enter something..."
-            style={{
-              borderBottomColor: "black",
-              borderBottomWidth: 1,
-              padding: 15,
-            }}
-            value={todo}
-            onChangeText={inputHandler}
-          />
-          <Button
-            title="ADD"
-            onPress={() => {
-              addTodoHandler();
-            }}
-          />
-        </View>
-      }
+      <Button
+        title="Add new Todo"
+        onPress={() => {
+          setInputVisible(true);
+        }}
+      />
+      <TodoInput
+        onAddTodo={addTodoHandler}
+        visible={inputVisible}
+        onCancel={cancelTodoInput}
+      />
       <View>
-        {todos.map((td: string, idx) => (
-          <Text key={idx}>{td}</Text>
-        ))}
+        <FlatList
+          data={todos}
+          keyExtractor={(item, _index) => item.id}
+          renderItem={(itemData) => (
+            <Todo
+              id={itemData.item.id}
+              value={itemData.item.value}
+              onDelete={deleteTodoHandler}
+            />
+            // <View style={styles.listItem}>
+            //   <Text>{itemData.item.value}</Text>
+            // </View>
+          )}
+        />
+        {/* {todos.map((td: string, idx) => (
+          <ScrollView style={styles.listItem}>
+            <Text key={idx}>{td}</Text>
+          </ScrollView>
+        ))} */}
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  inputContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-});
