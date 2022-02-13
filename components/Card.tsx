@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 
 interface CardProps {
-  styles: any;
+  styles?: any;
 }
 
 const Card: React.FC<CardProps> = (props: any) => {

@@ -1,26 +1,21 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { TextInput, StyleSheet, TextInputProps } from "react-native";
 
 interface InputProps {
-  styles: any;
+  styles?: any;
+  // numberInputHandler?: any;
 }
 
-const Input: React.FC<InputProps> = (props: any) => {
-  return (
-    <View style={{ ...styles.card, ...props.styles }}>{props.children}</View>
-  );
+const Input: React.FC<TextInputProps & InputProps> = (props: any) => {
+  return <TextInput {...props} style={{ ...styles.input, ...props.styles }} />;
 };
 
 const styles = StyleSheet.create({
-  card: {
-    shadowColor: "black",
-    shadowOffset: { height: 2, width: 0 },
-    shadowOpacity: 0.26,
-    shadowRadius: 6,
-    elevation: 5,
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
+  input: {
+    height: 30,
+    borderBottomColor: "grey",
+    borderBottomWidth: 1,
+    marginVertical: 10,
   },
 });
 
