@@ -7,8 +7,13 @@ import GameScreen from "./screens/GameScreen";
 import GameOverScreen from "./screens/GameOverScreen";
 
 export default function App() {
-  const [selectedNumber, setSelectedNumber] = useState<number>();
+  const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
   const [rounds, setRounds] = useState<number>(0);
+
+  const newGameHandler = () => {
+    setRounds(0);
+    setSelectedNumber(null);
+  };
 
   const startGameHandler = (selectedNumber: number) => {
     setSelectedNumber(selectedNumber);
@@ -25,7 +30,13 @@ export default function App() {
       <GameScreen userChoice={selectedNumber} onGameOver={gameOverHandler} />
     );
   } else if (rounds > 0) {
-    content = <GameOverScreen />;
+    content = (
+      <GameOverScreen
+        rounds={rounds}
+        selectedNumber={selectedNumber}
+        onRestart={newGameHandler}
+      />
+    );
   }
 
   return (

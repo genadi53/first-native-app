@@ -13,12 +13,30 @@ import Input from "../components/Input";
 import NumberContainer from "../components/NumberContiner";
 import Colors from "../colors";
 
-interface GameOverScreenProps {}
+interface GameOverScreenProps {
+  rounds: number;
+  selectedNumber: number | null;
+  onRestart: Function;
+}
 
-const GameOverScreen: React.FC<GameOverScreenProps> = (props) => {
+const GameOverScreen: React.FC<GameOverScreenProps> = ({
+  rounds,
+  selectedNumber,
+  onRestart,
+}) => {
   return (
     <View style={styles.screen}>
       <Text>Game is Over!</Text>
+      <Text>Number was: {selectedNumber}</Text>
+      <Text>Rounds: {rounds}</Text>
+      <View>
+        <Button
+          title="New Game"
+          onPress={() => {
+            onRestart();
+          }}
+        />
+      </View>
     </View>
   );
 };
