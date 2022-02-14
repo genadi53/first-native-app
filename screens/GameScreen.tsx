@@ -1,17 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Button,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Alert,
-} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import Card from "../components/Card";
-import Input from "../components/Input";
 import NumberContainer from "../components/NumberContiner";
-import Colors from "../colors";
 
 interface GameScreenProps {
   userChoice: number;
